@@ -6,7 +6,6 @@
 package isp392.controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -79,7 +78,7 @@ public class MainController extends HttpServlet {
 
     private static final String SORT_BY_PURCHASING = "SortByPurchasing";
     private static final String SORT_BY_PURCHASING_CONTROLLER = "SortByPurchasingController";
-
+    
     private static final String SEARCH_BRAND = "Search";
     private static final String SEARCH_BRAND_CONTROLLER = "ShowAllBrandManager";
 
@@ -94,10 +93,32 @@ public class MainController extends HttpServlet {
 
     private static final String CHANGE_PASSWORD = "ChangePassword";
     private static final String CHANGE_PASSWORD_CONTROLLER = "ChangePasswordController";
+
+    private static final String SEARCH_USER = "SearchUser";
+    private static final String SEARCH_USER_CONTROLLER = "SearchUserController";
+
+    private static final String UPDATE_USER = "UpdateUser";
+    private static final String UPDATE_USER_CONTROLLER = "UpdateUserController";
+
+    private static final String FILTER_BY_EMPLOYEE = "FilterByEmployee";
+    private static final String FILTER_BY_EMPLOYEE_CONTROLLER = "FilterByEmployeeController";
+
+    private static final String FILTER_BY_CUSTOMER = "FilterByCustomer";
+    private static final String FILTER_BY_CUSTOMER_CONTROLLER = "FilterByCustomerController";
+
+    private static final String UPDATE_USER_STATUS = "UpdateUserStatus";
+    private static final String UPDATE_USER_STATUS_CONTROLLER = "UpdateUserStatusController";
+    
+    private static final String NAVIGATE_DETAIL_TO_SHOPPING = "NavigateShopping";
+    private static final String NAVIGATE_DETAIL_TO_SHOPPING_CONTROLLER = "NavigateShoppingController";
     
     private static final String UPDATE_PROFILE = "UpdateProfile";
     private static final String UPDATE_PROFILE_CONTROLLER = "UpdateUserProfile";
 
+    private static final String CREATE_NEW_USER_CUSTOMER = "registerNewUser";
+    private static final String CREATE_NEW_USER_CUSTOMER_CONTROLLER = "CreateNewUserCustomerController";
+   
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -144,6 +165,8 @@ public class MainController extends HttpServlet {
                 url = DELETE_PRODUCT_DETAIL_MANAGER_CONTROLLER;
             } else if (SORT_BY_PURCHASING.equals(action)) {
                 url = SORT_BY_PURCHASING_CONTROLLER;
+            } else if (NAVIGATE_DETAIL_TO_SHOPPING.equals(action)) {
+                url = NAVIGATE_DETAIL_TO_SHOPPING_CONTROLLER;
             } else if (SEARCH_BRAND.equals(action)) {
                 url = SEARCH_BRAND_CONTROLLER;
             } else if (UPDATE_BRAND.equals(action)) {
@@ -158,6 +181,18 @@ public class MainController extends HttpServlet {
                 url = CHANGE_PASSWORD_CONTROLLER;
             } else if (UPDATE_PROFILE.equals(action)) {
                 url = UPDATE_PROFILE_CONTROLLER;
+            } else if (SEARCH_USER.equals(action)) {
+                url = SEARCH_USER_CONTROLLER;
+            } else if (UPDATE_USER.equals(action)) {
+                url = UPDATE_USER_CONTROLLER;
+            } else if (FILTER_BY_EMPLOYEE.equals(action)) {
+                url = FILTER_BY_EMPLOYEE_CONTROLLER;
+            } else if (FILTER_BY_CUSTOMER.equals(action)) {
+                url = FILTER_BY_CUSTOMER_CONTROLLER;
+            } else if (UPDATE_USER_STATUS.equals(action)) {
+                url = UPDATE_USER_STATUS_CONTROLLER;
+            } else if(CREATE_NEW_USER_CUSTOMER.equals(action)){
+                url = CREATE_NEW_USER_CUSTOMER_CONTROLLER;
             }
         } catch (Exception e) {
             log("Error at MainController: " + e.toString());
