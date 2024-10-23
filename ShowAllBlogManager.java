@@ -7,6 +7,8 @@ package isp392.controllers;
 
 import isp392.blog.BlogDAO;
 import isp392.blog.BlogDTO;
+import isp392.brand.BrandDAO;
+import isp392.brand.BrandDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -15,40 +17,52 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class NavigateBlogController extends HttpServlet {
+/**
+ *
+ * @author GIGABYTE
+ */
+public class ShowAllBlogManager extends HttpServlet {
 
-    private static final String SUCCESS = "blog.jsp";
-    private static final String ERROR = "HomeController";
+    private static final String SUCCESS = "STAFF_BlogManagement.jsp";
+    private static final String ERROR = "HomeController.jsp";
+    // Lam theo template cac controller ShowAll..
 
+//    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        response.setContentType("text/html;charset=UTF-8");
+//        String url = ERROR;
+//        try {
+//            String search = request.getParameter("search");
+//            BlogDAO daoBlog = new BlogDAO();
+//            List<BlogDTO> listBlog = daoBlog.getListBlogManagement(search);
+//
+//            if (!listBlog.isEmpty()) {
+//                request.setAttribute("SHOW_BLOG_MANAGEMENT", listBlog);
+//                url = SUCCESS;
+//            }
+//        } catch (Exception e) {
+//            log("Error at ShowAllBlogManager: " + e.toString());
+//        } finally {
+//            request.getRequestDispatcher(url).forward(request, response);
+//        }
+//    }
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
+            int blogID = Integer.parseInt(request.getParameter("blogID"));
             BlogDAO blogDAO = new BlogDAO();
-            List<BlogDTO> blogList = blogDAO.getListBlog();
-            if (blogList != null && !blogList.isEmpty()) {
-                request.setAttribute("BLOG_LIST", blogList);
+            BlogDTO blogMG = (BlogDTO) blogDAO.viewBlogManagement(blogID);
+            if (blogMG != null) {
+                request.setAttribute("SHOW_BLOG_MANAGEMENT", blogMG);
             } else {
-                request.setAttribute("ERROR", "No blogs found.");
+                request.setAttribute("ERROR", "No blog founded.");
             }
-
-            List<BlogDTO> newestBlog = blogDAO.getNewestBlog();
-            if (newestBlog != null && !newestBlog.isEmpty()) {
-                request.setAttribute("BLOG_NEWEST_LIST", newestBlog);
-            } else {
-                request.setAttribute("ERROR", "No blogs found.");
-            }
-//            List<BlogDTO> detailBlog = blogDAO.getBlogByID(0);
-//            if (detailBlog != null && !detailBlog.isEmpty()) {
-//                request.setAttribute("BLOG_DETAIL", detailBlog);
-//            } else {
-//                request.setAttribute("ERROR", "No blogs found.");
-//            }
             url = SUCCESS;
         } catch (Exception e) {
-            log("Error at NavigateBlogController: " + e.toString());
-            request.setAttribute("ERROR", "An unexpected error occurred.");
+            log("Error at ShowAllBlogManagement: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

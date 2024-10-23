@@ -9,46 +9,52 @@ import isp392.blog.BlogDAO;
 import isp392.blog.BlogDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class NavigateBlogController extends HttpServlet {
+/**
+ *
+ * @author GIGABYTE
+ */
+public class UpdateBlogManager extends HttpServlet {
 
-    private static final String SUCCESS = "blog.jsp";
-    private static final String ERROR = "HomeController";
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    private static final String SUCCESS = "#";
+    private static final String ERROR = "#";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            BlogDAO blogDAO = new BlogDAO();
-            List<BlogDTO> blogList = blogDAO.getListBlog();
-            if (blogList != null && !blogList.isEmpty()) {
-                request.setAttribute("BLOG_LIST", blogList);
-            } else {
-                request.setAttribute("ERROR", "No blogs found.");
-            }
+            int blogID = Integer.parseInt(request.getParameter("blogID"));
+            int staffID = Integer.parseInt(request.getParameter("staffID"));
+            String title = request.getParameter("title");
+            String existingImage = request.getParameter("existingImage");
+            String description = request.getParameter("description");
+            Date createDate = Date.valueOf(request.getParameter("createDate"));
+            int status = Integer.parseInt(request.getParameter("status"));
 
-            List<BlogDTO> newestBlog = blogDAO.getNewestBlog();
-            if (newestBlog != null && !newestBlog.isEmpty()) {
-                request.setAttribute("BLOG_NEWEST_LIST", newestBlog);
-            } else {
-                request.setAttribute("ERROR", "No blogs found.");
+            BlogDAO blogDAO = new BlogDAO();
+            BlogDTO blogDTO = new BlogDTO(blogID, staffID, title,existingImage , description, createDate, status);
+
+            boolean isUpdated = blogDAO.updateBlog(blogDTO);
+            if (isUpdated) {
+                url = SUCCESS;
             }
-//            List<BlogDTO> detailBlog = blogDAO.getBlogByID(0);
-//            if (detailBlog != null && !detailBlog.isEmpty()) {
-//                request.setAttribute("BLOG_DETAIL", detailBlog);
-//            } else {
-//                request.setAttribute("ERROR", "No blogs found.");
-//            }
-            url = SUCCESS;
         } catch (Exception e) {
-            log("Error at NavigateBlogController: " + e.toString());
-            request.setAttribute("ERROR", "An unexpected error occurred.");
+            log("Error at UpdateBlogManager: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
